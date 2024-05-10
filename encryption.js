@@ -18,29 +18,37 @@ async function generateKeyPairs() {
     }
 }
 
-async function encryptMessage(senderPrivateKey, recipientPublicKey) {
+async function encryptMessage(sender) {
     try {
+        const recipientPublicKey = document.getElementById("publicKeyToEncrypt").value;
         const messageToEncrypt = document.getElementById("messageToEncrypt").value;
 
         // Convert keys from base64 to ArrayBuffer
-        const privateKeyBuffer = base64ToArrayBuffer(document.getElementById(senderPrivateKey).value);
-        const publicKeyBuffer = base64ToArrayBuffer(document.getElementById(recipientPublicKey).value);
+        const publicKeyBuffer = base64ToArrayBuffer(recipientPublicKey);
 
         // Encrypt message using recipient's public key
-        encryptedMessage = await encryptMessageWithPublicKey(messageToEncrypt, publicKeyBuffer); 
-        alert(encryptedMessage);
+        encryptedMessage = await encryptMessageWithPublicKey(messageToEncrypt, publicKeyBuffer);
 
         // Display encrypted message
         document.getElementById("encryptedMessage").value = arrayBufferToBase64(encryptedMessage);
+
+        // Display the appropriate private key for decryption
+        if (sender === 'alice') {
+            document.getElementById("privateKeyToDecrypt").value = document.getElementById("alicePrivateKey").value;
+        } else if (sender === 'bob') {
+            document.getElementById("privateKeyToDecrypt").value = document.getElementById("bobPrivateKey").value;
+        }
     } catch (error) {
         console.error("Error encrypting message:", error);
     }
 }
 
-async function decryptMessage(recipientPrivateKey) {
+async function decryptMessage() {
     try {
+        const privateKeyToDecrypt = document.getElementById("privateKeyToDecrypt").value;
+
         // Convert private key from base64 to ArrayBuffer
-        const privateKeyBuffer = base64ToArrayBuffer(document.getElementById(recipientPrivateKey).value);
+        const privateKeyBuffer = base64ToArrayBuffer(privateKeyToDecrypt);
 
         // Decrypt the message using recipient's private key
         const decryptedMessage = await decryptMessageWithPrivateKey(encryptedMessage, privateKeyBuffer);

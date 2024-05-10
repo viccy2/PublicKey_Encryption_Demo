@@ -8,21 +8,23 @@ async function generateKeyPairs() {
         aliceKeyPair = await generateKeyPair();
         bobKeyPair = await generateKeyPair();
 
-        // Display public and private keys
-        document.getElementById("publicKey").value = arrayBufferToBase64(aliceKeyPair.publicKey);
-        document.getElementById("privateKey").value = arrayBufferToBase64(aliceKeyPair.privateKey);
+        // Display public and private keys for Alice and Bob
+        document.getElementById("alicePublicKey").value = arrayBufferToBase64(aliceKeyPair.publicKey);
+        document.getElementById("alicePrivateKey").value = arrayBufferToBase64(aliceKeyPair.privateKey);
+        document.getElementById("bobPublicKey").value = arrayBufferToBase64(bobKeyPair.publicKey);
+        document.getElementById("bobPrivateKey").value = arrayBufferToBase64(bobKeyPair.privateKey);
     } catch (error) {
         console.error("Error generating key pairs:", error);
     }
 }
 
-async function encryptMessage() {
+async function encryptMessage(senderPrivateKey, recipientPublicKey) {
     try {
-        const publicKeyToEncrypt = document.getElementById("publicKeyToEncrypt").value;
         const messageToEncrypt = document.getElementById("messageToEncrypt").value;
 
-        // Convert public key from base64 to ArrayBuffer
-        const publicKeyBuffer = base64ToArrayBuffer(publicKeyToEncrypt);
+        // Convert keys from base64 to ArrayBuffer
+        const privateKeyBuffer = base64ToArrayBuffer(senderPrivateKey);
+        const publicKeyBuffer = base64ToArrayBuffer(recipientPublicKey);
 
         // Encrypt message using recipient's public key
         encryptedMessage = await encryptMessageWithPublicKey(messageToEncrypt, publicKeyBuffer);
@@ -34,12 +36,10 @@ async function encryptMessage() {
     }
 }
 
-async function decryptMessage() {
+async function decryptMessage(recipientPrivateKey) {
     try {
-        const privateKeyToDecrypt = document.getElementById("privateKeyToDecrypt").value;
-
         // Convert private key from base64 to ArrayBuffer
-        const privateKeyBuffer = base64ToArrayBuffer(privateKeyToDecrypt);
+        const privateKeyBuffer = base64ToArrayBuffer(recipientPrivateKey);
 
         // Decrypt the message using recipient's private key
         const decryptedMessage = await decryptMessageWithPrivateKey(encryptedMessage, privateKeyBuffer);

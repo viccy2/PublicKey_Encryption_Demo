@@ -4,11 +4,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Columnar sTransposition Cipher</title>
+<title>Columnar Transposition Cipher</title>
 </head>
 <body>
 
-<h2>Columnar Transposition Cipher</h2>
+<h2>Columnars Transposition Cipher</h2>
 
 <label for="key">Enter Key:</label>
 <input type="text" id="key">
@@ -16,13 +16,13 @@
 <label for="plaintext">Enter Text to Encrypt:</label>
 <input type="text" id="plaintext">
 
-<button onclick="encrypt()">Encrypt</button>
+<button id="encryptButton">Encrypt</button>
 
 <p>Encrypted Message:</p>
 <input type="text" id="encrypted" readonly>
 
 <script>
-function encrypt() {
+document.getElementById("encryptButton").addEventListener("click", function() {
     var key = document.getElementById("key").value;
     var plaintext = document.getElementById("plaintext").value;
     
@@ -54,7 +54,7 @@ function encrypt() {
     var encrypted = sortedColumns.join("");
     
     document.getElementById("encrypted").value = encrypted;
-}
+});
 </script>
 
 </body>

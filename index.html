@@ -1,1 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Key Encryption Demo</title>
+</head>
+<body>
+    <h1>Public Key Encryption Demo</h1>
 
+    <div>
+        <h2>Generate Key Pairs</h2>
+        <button onclick="generateKeyPairs()">Generate Key Pairs</button>
+        <div>
+            <label for="publicKey">Public Key:</label>
+            <textarea id="publicKey" rows="4" cols="50" readonly></textarea>
+        </div>
+        <div>
+            <label for="privateKey">Private Key:</label>
+            <textarea id="privateKey" rows="4" cols="50" readonly></textarea>
+        </div>
+    </div>
+
+    <div>
+        <h2>Encryption</h2>
+        <label for="publicKeyToEncrypt">Recipient's Public Key:</label>
+        <textarea id="publicKeyToEncrypt" rows="4" cols="50"></textarea><br>
+        <label for="messageToEncrypt">Message to Encrypt:</label>
+        <textarea id="messageToEncrypt" rows="4" cols="50"></textarea><br>
+        <button onclick="encryptMessage()">Encrypt Message</button>
+        <div>
+            <label for="encryptedMessage">Encrypted Message:</label>
+            <textarea id="encryptedMessage" rows="4" cols="50" readonly></textarea>
+        </div>
+    </div>
+
+    <div>
+        <h2>Decryption</h2>
+        <label for="privateKeyToDecrypt">Your Private Key:</label>
+        <textarea id="privateKeyToDecrypt" rows="4" cols="50"></textarea><br>
+        <button onclick="decryptMessage()">Decrypt Message</button>
+        <div>
+            <label for="decryptedMessage">Decrypted Message:</label>
+            <textarea id="decryptedMessage" rows="4" cols="50" readonly></textarea>
+        </div>
+    </div>
+
+    <script src="encryption.js"></script>
+</body>
+</html>

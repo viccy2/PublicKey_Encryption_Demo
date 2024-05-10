@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<h2>Columnars Transposition Cipher</h2>
+<h2>Columnar Transposition Cipher</h2>
 
 <label for="key">Enter Key:</label>
 <input type="text" id="key">
@@ -44,11 +44,13 @@ document.getElementById("encryptButton").addEventListener("click", function() {
     }
     
     // Sort columns based on alphabetical order of key
-    var sortedColumns = [];
-    for (var i = 0; i < key.length; i++) {
-        var index = key.indexOf(String.fromCharCode(65 + i));
-        sortedColumns.push(columns[index]);
-    }
+    // Sort columns based on alphabetical order of key
+var sortedColumns = [];
+for (var i = 0; i < key.length; i++) {
+    var index = key.indexOf(String.fromCharCode(65 + i));
+    sortedColumns.push(columns[index]);
+}
+
     
     // Concatenate sorted columns to get the encrypted message
     var encrypted = sortedColumns.join("");

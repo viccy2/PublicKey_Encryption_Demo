@@ -4,7 +4,7 @@ let encryptedMessage;
 
 async function generateKeyPairs() {
     try {
-        // Generate key pairs for Alice and Bob
+        // Generate key pairs for Alice and Bob separately
         aliceKeyPair = await generateKeyPair();
         bobKeyPair = await generateKeyPair();
 
@@ -103,12 +103,9 @@ async function decryptMessageWithPrivateKey(encryptedMessage, privateKey) {
 
 // Helper function to convert ArrayBuffer to base64 string
 function arrayBufferToBase64(buffer) {
-    const bytes = new Uint8Array(buffer);
-    let binary = "";
-    for (let i = 0; i < bytes.byteLength; i++) {
-        binary += String.fromCharCode(bytes[i]);
-    }
-    return btoa(binary);
+    const binaryArray = new Uint8Array(buffer);
+    const binaryString = Array.from(binaryArray, byte => String.fromCharCode(byte)).join('');
+    return btoa(binaryString);
 }
 
 // Helper function to convert base64 string to ArrayBuffer

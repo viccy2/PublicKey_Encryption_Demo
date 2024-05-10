@@ -4,47 +4,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Public Key Encryption Demo</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Public Key Encryption Demo</h1>
+    <div class="container">
+        <h1 class="mt-5">Public Key Encryption Demo</h1>
 
-    <div>
-        <h2>Generate Key Pairs</h2>
-        <button onclick="generateKeyPairs()">Generate Key Pairs</button>
-        <div>
-            <label for="publicKey">Public Key:</label>
-            <textarea id="publicKey" rows="4" cols="50" readonly></textarea>
+        <div class="mt-5">
+            <h2>Generate Key Pairs</h2>
+            <button class="btn btn-primary" onclick="generateKeyPairs()">Generate Key Pairs</button>
+            <div class="mt-3">
+                <h3>Alice's Key Pair</h3>
+                <div class="form-group">
+                    <label for="alicePublicKey">Alice's Public Key:</label>
+                    <textarea class="form-control" id="alicePublicKey" rows="4" readonly></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="alicePrivateKey">Alice's Private Key:</label>
+                    <textarea class="form-control" id="alicePrivateKey" rows="4" readonly></textarea>
+                </div>
+            </div>
+            <div class="mt-3">
+                <h3>Bob's Key Pair</h3>
+                <div class="form-group">
+                    <label for="bobPublicKey">Bob's Public Key:</label>
+                    <textarea class="form-control" id="bobPublicKey" rows="4" readonly></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="bobPrivateKey">Bob's Private Key:</label>
+                    <textarea class="form-control" id="bobPrivateKey" rows="4" readonly></textarea>
+                </div>
+            </div>
         </div>
-        <div>
-            <label for="privateKey">Private Key:</label>
-            <textarea id="privateKey" rows="4" cols="50" readonly></textarea>
+
+        <div class="mt-5">
+            <h2>Encryption</h2>
+            <div class="form-group">
+                <label for="publicKeyToEncrypt">Recipient's Public Key:</label>
+                <textarea class="form-control" id="publicKeyToEncrypt" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="messageToEncrypt">Message to Encrypt:</label>
+                <textarea class="form-control" id="messageToEncrypt" rows="4"></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="encryptMessage('alicePrivateKey', 'bobPublicKey')">Encrypt Message</button>
+            <div class="mt-3">
+                <label for="encryptedMessage">Encrypted Message:</label>
+                <textarea class="form-control" id="encryptedMessage" rows="4" readonly></textarea>
+            </div>
+        </div>
+
+        <div class="mt-5">
+            <h2>Decryption</h2>
+            <div class="form-group">
+                <label for="privateKeyToDecrypt">Your Private Key:</label>
+                <textarea class="form-control" id="privateKeyToDecrypt" rows="4"></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="decryptMessage('bobPrivateKey')">Decrypt Message</button>
+            <div class="mt-3">
+                <label for="decryptedMessage">Decrypted Message:</label>
+                <textarea class="form-control" id="decryptedMessage" rows="4" readonly></textarea>
+            </div>
         </div>
     </div>
 
-    <div>
-        <h2>Encryption</h2>
-        <label for="publicKeyToEncrypt">Recipient's Public Key:</label>
-        <textarea id="publicKeyToEncrypt" rows="4" cols="50"></textarea><br>
-        <label for="messageToEncrypt">Message to Encrypt:</label>
-        <textarea id="messageToEncrypt" rows="4" cols="50"></textarea><br>
-        <button onclick="encryptMessage()">Encrypt Message</button>
-        <div>
-            <label for="encryptedMessage">Encrypted Message:</label>
-            <textarea id="encryptedMessage" rows="4" cols="50" readonly></textarea>
-        </div>
-    </div>
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <div>
-        <h2>Decryption</h2>
-        <label for="privateKeyToDecrypt">Your Private Key:</label>
-        <textarea id="privateKeyToDecrypt" rows="4" cols="50"></textarea><br>
-        <button onclick="decryptMessage()">Decrypt Message</button>
-        <div>
-            <label for="decryptedMessage">Decrypted Message:</label>
-            <textarea id="decryptedMessage" rows="4" cols="50" readonly></textarea>
-        </div>
-    </div>
-
+    <!-- Your custom JavaScript -->
     <script src="encryption.js"></script>
 </body>
 </html>

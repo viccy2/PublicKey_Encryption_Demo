@@ -23,8 +23,8 @@ async function encryptMessage(senderPrivateKey, recipientPublicKey) {
         const messageToEncrypt = document.getElementById("messageToEncrypt").value;
 
         // Convert keys from base64 to ArrayBuffer
-        const privateKeyBuffer = base64ToArrayBuffer(senderPrivateKey);
-        const publicKeyBuffer = base64ToArrayBuffer(recipientPublicKey);
+        const privateKeyBuffer = base64ToArrayBuffer(document.getElementById(senderPrivateKey).value);
+        const publicKeyBuffer = base64ToArrayBuffer(document.getElementById(recipientPublicKey).value);
 
         // Encrypt message using recipient's public key
         encryptedMessage = await encryptMessageWithPublicKey(messageToEncrypt, publicKeyBuffer);
@@ -39,7 +39,7 @@ async function encryptMessage(senderPrivateKey, recipientPublicKey) {
 async function decryptMessage(recipientPrivateKey) {
     try {
         // Convert private key from base64 to ArrayBuffer
-        const privateKeyBuffer = base64ToArrayBuffer(recipientPrivateKey);
+        const privateKeyBuffer = base64ToArrayBuffer(document.getElementById(recipientPrivateKey).value);
 
         // Decrypt the message using recipient's private key
         const decryptedMessage = await decryptMessageWithPrivateKey(encryptedMessage, privateKeyBuffer);

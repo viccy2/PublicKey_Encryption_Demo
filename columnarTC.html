@@ -27,7 +27,7 @@ document.getElementById("encryptButton").addEventListener("click", function() {
     var plaintext = document.getElementById("plaintext").value;
     
     // Remove spaces and non-alphanumeric characters from the key
-    key = key.replace(/[^a-zA-Z]/g, "");
+    key = key.replace(/[^a-zA-Z]/g, "").toUpperCase();
     
     // Create an array to hold the columns
     var columns = [];
@@ -43,14 +43,15 @@ document.getElementById("encryptButton").addEventListener("click", function() {
         columns[columnIndex] += plaintext[i];
     }
     
-    // Sort columns based on alphabetical order of key
-    // Sort columns based on alphabetical order of key
-var sortedColumns = [];
-for (var i = 0; i < key.length; i++) {
-    var index = key.indexOf(String.fromCharCode(65 + i));
-    sortedColumns.push(columns[index]);
-}
-
+    // Sort key characters alphabetically
+    var sortedKey = key.split('').sort().join('');
+    
+    // Rearrange columns based on sorted key
+    var sortedColumns = [];
+    for (var i = 0; i < sortedKey.length; i++) {
+        var index = key.indexOf(sortedKey[i]);
+        sortedColumns.push(columns[index]);
+    }
     
     // Concatenate sorted columns to get the encrypted message
     var encrypted = sortedColumns.join("");

@@ -1,1 +1,61 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Columnar Transposition Cipher</title>
+</head>
+<body>
+
+<h2>Columnar Transposition Cipher</h2>
+
+<label for="key">Enter Key:</label>
+<input type="text" id="key">
+
+<label for="plaintext">Enter Text to Encrypt:</label>
+<input type="text" id="plaintext">
+
+<button onclick="encrypt()">Encrypt</button>
+
+<p>Encrypted Message:</p>
+<input type="text" id="encrypted" readonly>
+
+<script>
+function encrypt() {
+    var key = document.getElementById("key").value;
+    var plaintext = document.getElementById("plaintext").value;
+    
+    // Remove spaces and non-alphanumeric characters from the key
+    key = key.replace(/[^a-zA-Z]/g, "");
+    
+    // Create an array to hold the columns
+    var columns = [];
+    
+    // Initialize columns with empty strings
+    for (var i = 0; i < key.length; i++) {
+        columns.push("");
+    }
+    
+    // Assign characters from plaintext to columns based on the key
+    for (var i = 0; i < plaintext.length; i++) {
+        var columnIndex = i % key.length;
+        columns[columnIndex] += plaintext[i];
+    }
+    
+    // Sort columns based on alphabetical order of key
+    var sortedColumns = [];
+    for (var i = 0; i < key.length; i++) {
+        var index = key.indexOf(String.fromCharCode(65 + i));
+        sortedColumns.push(columns[index]);
+    }
+    
+    // Concatenate sorted columns to get the encrypted message
+    var encrypted = sortedColumns.join("");
+    
+    document.getElementById("encrypted").value = encrypted;
+}
+</script>
+
+</body>
+</html>

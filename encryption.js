@@ -27,7 +27,8 @@ async function encryptMessage(senderPrivateKey, recipientPublicKey) {
         const publicKeyBuffer = base64ToArrayBuffer(document.getElementById(recipientPublicKey).value);
 
         // Encrypt message using recipient's public key
-        encryptedMessage = await encryptMessageWithPublicKey(messageToEncrypt, publicKeyBuffer);
+        encryptedMessage = await encryptMessageWithPublicKey(messageToEncrypt, publicKeyBuffer); 
+        alert(encryptedMessage);
 
         // Display encrypted message
         document.getElementById("encryptedMessage").value = arrayBufferToBase64(encryptedMessage);

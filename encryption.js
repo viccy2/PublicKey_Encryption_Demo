@@ -1,119 +1,117 @@
-let aliceKeyPair;
-let bobKeyPair;
-let encryptedMessage;
+let alicePublicKey, bobPublicKey, alicePrivateKey, bobPrivateKey;
 
 async function generateKeyPairs() {
-    try {
-        // Generate key pairs for Alice and Bob separately
-        aliceKeyPair = await generateKeyPair();
-        bobKeyPair = await generateKeyPair();
+    // Generate key pairs for Alice
+    const aliceKeyPair = await generateKeyPair();
+    alicePublicKey = aliceKeyPair.publicKey;
+    alicePrivateKey = aliceKeyPair.privateKey;
+    document.getElementById('alicePublicKey').value = alicePublicKey;
+    document.getElementById('alicePrivateKey').value = alicePrivateKey;
 
-        // Display public and private keys for Alice and Bob
-        document.getElementById("alicePublicKey").value = arrayBufferToBase64(aliceKeyPair.publicKey);
-        document.getElementById("alicePrivateKey").value = arrayBufferToBase64(aliceKeyPair.privateKey);
-        document.getElementById("bobPublicKey").value = arrayBufferToBase64(bobKeyPair.publicKey);
-        document.getElementById("bobPrivateKey").value = arrayBufferToBase64(bobKeyPair.privateKey);
-    } catch (error) {
-        console.error("Error generating key pairs:", error);
-    }
+    // Generate key pairs for Bob
+    const bobKeyPair = await generateKeyPair();
+    bobPublicKey = bobKeyPair.publicKey;
+    bobPrivateKey = bobKeyPair.privateKey;
+    document.getElementById('bobPublicKey').value = bobPublicKey;
+    document.getElementById('bobPrivateKey').value = bobPrivateKey;
 }
 
-async function encryptMessage(sender) {
-    try {
-        const recipientPublicKey = document.getElementById("publicKeyToEncrypt").value;
-        const messageToEncrypt = document.getElementById("messageToEncrypt").value;
-
-        // Convert keys from base64 to ArrayBuffer
-        const publicKeyBuffer = base64ToArrayBuffer(recipientPublicKey);
-
-        // Encrypt message using recipient's public key
-        encryptedMessage = await encryptMessageWithPublicKey(messageToEncrypt, publicKeyBuffer);
-
-        // Display encrypted message
-        document.getElementById("encryptedMessage").value = arrayBufferToBase64(encryptedMessage);
-
-        // Display the appropriate private key for decryption
-        if (sender === 'alice') {
-            document.getElementById("privateKeyToDecrypt").value = document.getElementById("alicePrivateKey").value;
-        } else if (sender === 'bob') {
-            document.getElementById("privateKeyToDecrypt").value = document.getElementById("bobPrivateKey").value;
-        }
-    } catch (error) {
-        console.error("Error encrypting message:", error);
-    }
-}
-
-async function decryptMessage() {
-    try {
-        const privateKeyToDecrypt = document.getElementById("privateKeyToDecrypt").value;
-
-        // Convert private key from base64 to ArrayBuffer
-        const privateKeyBuffer = base64ToArrayBuffer(privateKeyToDecrypt);
-
-        // Decrypt the message using recipient's private key
-        const decryptedMessage = await decryptMessageWithPrivateKey(encryptedMessage, privateKeyBuffer);
-
-        // Display decrypted message
-        document.getElementById("decryptedMessage").value = decryptedMessage;
-    } catch (error) {
-        console.error("Error decrypting message:", error);
-    }
-}
-
-// Function to generate key pair
 async function generateKeyPair() {
     const keyPair = await window.crypto.subtle.generateKey(
         {
             name: "RSA-OAEP",
             modulusLength: 2048,
-            publicExponent: new Uint8Array([0x01, 0x00, 0x01]), // 65537
-            hash: { name: "SHA-256" },
+            publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+            hash: {name: "SHA-256"}
         },
         true,
         ["encrypt", "decrypt"]
     );
-    const publicKey = await window.crypto.subtle.exportKey("spki", keyPair.publicKey);
-    const privateKey = await window.crypto.subtle.exportKey("pkcs8", keyPair.privateKey);
-    return { publicKey, privateKey };
+
+    const publicKey = await window.crypto.subtle.exportKey(
+        "spki",
+        keyPair.publicKey
+    );
+
+    const privateKey = await window.crypto.subtle.exportKey(
+        "pkcs8",
+        keyPair.privateKey
+    );
+
+    return {
+        publicKey: btoa(String.fromCharCode(...new Uint8Array(publicKey))),
+        privateKey: btoa(String.fromCharCode(...new Uint8Array(privateKey)))
+    };
 }
 
-// Function to encrypt message with public key
-async function encryptMessageWithPublicKey(message, publicKey) {
-    const encryptedBuffer = await window.crypto.subtle.encrypt(
+async function encryptMessage() {
+    const publicKey = document.getElementById('publicKeyToEncrypt').value;
+    const message = document.getElementById('messageToEncrypt').value;
+    const encryptedMessage = await encrypt(publicKey, message);
+    document.getElementById('encryptedMessage').value = encryptedMessage;
+}
+
+async function decryptMessage() {
+    const privateKey = document.getElementById('privateKeyToDecrypt').value;
+    const encryptedMessage = document.getElementById('messageToDecrypt').value;
+    const decryptedMessage = await decrypt(privateKey, encryptedMessage);
+    document.getElementById('decryptedMessage').value = decryptedMessage;
+}
+
+async function encrypt(recipientPublicKey, message) {
+    const messageUint8 = new TextEncoder().encode(message);
+    const key = await importPublicKey(recipientPublicKey);
+
+    const encrypted = await window.crypto.subtle.encrypt(
+        {
+            name: "RSA-OAEP"
+        },
+        key,
+        messageUint8
+    );
+
+    return btoa(String.fromCharCode(...new Uint8Array(encrypted)));
+}
+
+async function decrypt(privateKey, encryptedMessage) {
+    const key = await importPrivateKey(privateKey);
+    const encryptedMessageUint8 = Uint8Array.from(atob(encryptedMessage), c => c.charCodeAt(0));
+
+    const decrypted = await window.crypto.subtle.decrypt(
+        {
+            name: "RSA-OAEP"
+        },
+        key,
+        encryptedMessageUint8
+    );
+
+    return new TextDecoder().decode(decrypted);
+}
+
+async function importPublicKey(key) {
+    const importedKey = await window.crypto.subtle.importKey(
+        "spki",
+        Uint8Array.from(atob(key), c => c.charCodeAt(0)),
         {
             name: "RSA-OAEP",
+            hash: {name: "SHA-256"}
         },
-        publicKey,
-        new TextEncoder().encode(message)
+        false,
+        ["encrypt"]
     );
-    return encryptedBuffer;
+    return importedKey;
 }
 
-// Function to decrypt message with private key
-async function decryptMessageWithPrivateKey(encryptedMessage, privateKey) {
-    const decryptedBuffer = await window.crypto.subtle.decrypt(
+async function importPrivateKey(key) {
+    const importedKey = await window.crypto.subtle.importKey(
+        "pkcs8",
+        Uint8Array.from(atob(key), c => c.charCodeAt(0)),
         {
             name: "RSA-OAEP",
+            hash: {name: "SHA-256"}
         },
-        privateKey,
-        encryptedMessage
+        false,
+        ["decrypt"]
     );
-    return new TextDecoder().decode(decryptedBuffer);
-}
-
-// Helper function to convert ArrayBuffer to base64 string
-function arrayBufferToBase64(buffer) {
-    const binaryArray = new Uint8Array(buffer);
-    const binaryString = Array.from(binaryArray, byte => String.fromCharCode(byte)).join('');
-    return btoa(binaryString);
-}
-
-// Helper function to convert base64 string to ArrayBuffer
-function base64ToArrayBuffer(base64) {
-    const binaryString = window.atob(base64);
-    const bytes = new Uint8Array(binaryString.length);
-    for (let i = 0; i < binaryString.length; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-    }
-    return bytes.buffer;
+    return importedKey;
 }

@@ -8,10 +8,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container">
-        <h1 class="mt-5">Public Key Encryption Demo</h1>
+    <div class="container mt-5">
+        <h1 class="mb-4">Public Keys
+            Encryption Demo</h1>
 
-        <div class="mt-5">
+        <div class="mb-5">
             <h2>Generate Key Pairs</h2>
             <button class="btn btn-primary" onclick="generateKeyPairs()">Generate Key Pairs</button>
             <div class="mt-3">
@@ -38,7 +39,7 @@
             </div>
         </div>
 
-        <div class="mt-5">
+        <div class="mb-5">
             <h2>Encryption</h2>
             <div class="form-group">
                 <label for="publicKeyToEncrypt">Recipient's Public Key:</label>
@@ -48,20 +49,21 @@
                 <label for="messageToEncrypt">Message to Encrypt:</label>
                 <textarea class="form-control" id="messageToEncrypt" rows="4"></textarea>
             </div>
-            <button class="btn btn-primary" onclick="encryptMessage('alicePrivateKey', 'bobPublicKey')">Encrypt Message</button>
+            <button class="btn btn-primary" onclick="encryptMessage('alice')">Encrypt Message as Alice</button>
+            <button class="btn btn-primary" onclick="encryptMessage('bob')">Encrypt Message as Bob</button>
             <div class="mt-3">
                 <label for="encryptedMessage">Encrypted Message:</label>
                 <textarea class="form-control" id="encryptedMessage" rows="4" readonly></textarea>
             </div>
         </div>
 
-        <div class="mt-5">
+        <div class="mb-5">
             <h2>Decryption</h2>
             <div class="form-group">
                 <label for="privateKeyToDecrypt">Your Private Key:</label>
                 <textarea class="form-control" id="privateKeyToDecrypt" rows="4"></textarea>
             </div>
-            <button class="btn btn-primary" onclick="decryptMessage('bobPrivateKey')">Decrypt Message</button>
+            <button class="btn btn-primary" onclick="decryptMessage()">Decrypt Message</button>
             <div class="mt-3">
                 <label for="decryptedMessage">Decrypted Message:</label>
                 <textarea class="form-control" id="decryptedMessage" rows="4" readonly></textarea>
@@ -78,3 +80,4 @@
     <script src="encryption.js"></script>
 </body>
 </html>
+

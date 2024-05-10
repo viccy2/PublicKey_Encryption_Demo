@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<h2>Columnar Transposition Cipher</h2>
+<h2>Columnarr Transposition Cipher</h2>
 
 <label for="key">Enter Key:</label>
 <input type="text" id="key">
@@ -23,11 +23,11 @@
 
 <script>
 document.getElementById("encryptButton").addEventListener("click", function() {
-    var key = document.getElementById("key").value;
+    var key = document.getElementById("key").value.toUpperCase();
     var plaintext = document.getElementById("plaintext").value;
     
     // Remove spaces and non-alphanumeric characters from the key
-    key = key.replace(/[^a-zA-Z]/g, "").toUpperCase();
+    key = key.replace(/[^A-Z]/g, "");
     
     // Create an array to hold the columns
     var columns = [];
@@ -43,15 +43,8 @@ document.getElementById("encryptButton").addEventListener("click", function() {
         columns[columnIndex] += plaintext[i];
     }
     
-    // Sort key characters alphabetically
-    var sortedKey = key.split('').sort().join('');
-    
-    // Rearrange columns based on sorted key
-    var sortedColumns = [];
-    for (var i = 0; i < sortedKey.length; i++) {
-        var index = key.indexOf(sortedKey[i]);
-        sortedColumns.push(columns[index]);
-    }
+    // Sort columns based on the alphabetical order of the key
+    var sortedColumns = columns.slice().sort();
     
     // Concatenate sorted columns to get the encrypted message
     var encrypted = sortedColumns.join("");

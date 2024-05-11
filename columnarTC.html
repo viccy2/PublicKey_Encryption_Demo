@@ -13,7 +13,7 @@
 <div class="container mt-5">
     <div class="card">
         <div class="card-body">
-            <h2 class="card-title">Columnar Transposition Cipher</h2>
+            <h2 class="card-title">Columnarss Transposition Cipher</h2>
             <div class="form-group">
                 <label for="key">Enter Key:</label>
                 <input type="text" class="form-control" id="key" value="Gem">
@@ -49,7 +49,7 @@ document.getElementById("encryptButton").addEventListener("click", function() {
     
     // Assign characters from plaintext to columns based on the key
     for (var i = 0; i < plaintext.length; i++) {
-        var columnIndex = key.indexOf(key[i]); // Get the index of the character in the key
+        var columnIndex = i % key.length; // Get the index of the column
         columns[columnIndex] += plaintext[i];
     }
     

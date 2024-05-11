@@ -13,7 +13,7 @@
 <div class="container mt-5">
     <div class="card">
         <div class="card-body">
-            <h2 class="card-title">Columnars Transposition Cipher</h2>
+            <h2 class="card-title">Columnar Transposition Cipher</h2>
             <div class="form-group">
                 <label for="key">Enter Key:</label>
                 <input type="text" class="form-control" id="key" value="Gem">
@@ -42,22 +42,19 @@ document.getElementById("encryptButton").addEventListener("click", function() {
     // Create an array to hold the columns
     var columns = [];
     
-    // Initialize columns with empty arrays
+    // Initialize columns with empty strings
     for (var i = 0; i < key.length; i++) {
-        columns.push([]);
+        columns.push("");
     }
     
     // Assign characters from plaintext to columns based on the key
     for (var i = 0; i < plaintext.length; i++) {
-        var columnIndex = i % key.length;
-        columns[key.indexOf(key[columnIndex])].push(plaintext[i]);
+        var columnIndex = key.indexOf(key[i]); // Get the index of the character in the key
+        columns[columnIndex] += plaintext[i];
     }
     
-    // Concatenate characters from columns based on the key
-    var encrypted = "";
-    for (var i = 0; i < key.length; i++) {
-        encrypted += columns[i].join("");
-    }
+    // Concatenate columns to get the encrypted message
+    var encrypted = columns.join("");
     
     document.getElementById("encrypted").value = encrypted;
 });

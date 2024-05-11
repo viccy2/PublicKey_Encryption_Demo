@@ -13,7 +13,7 @@
 <div class="container mt-5">
     <div class="card">
         <div class="card-body">
-            <h2 class="card-title">Columnar Transposition Cipher</h2>
+            <h2 class="card-title">Columnars Transposition Cipher</h2>
             <div class="form-group">
                 <label for="key">Enter Key:</label>
                 <input type="text" class="form-control" id="key" value="Gem">
@@ -39,30 +39,25 @@ document.getElementById("encryptButton").addEventListener("click", function() {
     // Remove spaces and non-alphanumeric characters from the key
     key = key.replace(/[^A-Z]/g, "");
     
-    // Determine number of columns based on key length
-    var numColumns = key.length;
-    
-    // Determine number of rows based on plaintext length and number of columns
-    var numRows = Math.ceil(plaintext.length / numColumns);
-    
     // Create an array to hold the columns
     var columns = [];
     
-    // Initialize columns with empty strings
-    for (var i = 0; i < numColumns; i++) {
-        columns.push("");
+    // Initialize columns with empty arrays
+    for (var i = 0; i < key.length; i++) {
+        columns.push([]);
     }
     
     // Assign characters from plaintext to columns based on the key
     for (var i = 0; i < plaintext.length; i++) {
-        var columnIndex = i % numColumns;
-        var rowIndex = Math.floor(i / numColumns);
-        var index = rowIndex * numColumns + key.indexOf(key[columnIndex]);
-        columns[index % numColumns] += plaintext[i];
+        var columnIndex = i % key.length;
+        columns[key.indexOf(key[columnIndex])].push(plaintext[i]);
     }
     
-    // Concatenate columns to get the encrypted message
-    var encrypted = columns.join("");
+    // Concatenate characters from columns based on the key
+    var encrypted = "";
+    for (var i = 0; i < key.length; i++) {
+        encrypted += columns[i].join("");
+    }
     
     document.getElementById("encrypted").value = encrypted;
 });

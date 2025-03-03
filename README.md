@@ -1,2 +1,16 @@
-# PublicKey_Encryption_Demo
-PublicKey_Encryption_Demo" is a repository showcasing a demonstration of public key encryption. This project includes a frontend interface for easy implementation and utilizes JavaScript to handle the logic behind public key encryption. Explore how this essential cryptographic technique works in securing communication over the internet.
+# Public Key Encryption in JavaScript
+
+Overview
+
+A JavaScript implementation of public-key encryption for secure data transmission, leveraging cryptographic algorithms to encrypt and decrypt messages.
+
+Features
+
+Key Generation: RSA key pair generation
+Encryption & Decryption: Secure message encoding & decoding
+Digital Signatures: Ensuring data integrity
+Browser & Node.js Support
+Tech Stack
+
+Language: JavaScript (Node.js & Browser)
+Libraries: crypto (Node.js), Web Crypto API (Browser)

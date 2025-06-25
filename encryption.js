@@ -15,7 +15,7 @@ async function generateKeyPairs() {
     document.getElementById('bobPublicKey').value = bobPublicKey;
     document.getElementById('bobPrivateKey').value = bobPrivateKey;
 }
-
+// async methods 
 async function generateKeyPair() {
     const keyPair = await window.crypto.subtle.generateKey(
         {

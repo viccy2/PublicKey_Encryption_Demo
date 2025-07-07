@@ -1,5 +1,5 @@
 let alicePublicKey, bobPublicKey, alicePrivateKey, bobPrivateKey;
-
+// generate keys methods 
 async function generateKeyPairs() {
     // Generate key pairs for Alice
     const aliceKeyPair = await generateKeyPair();

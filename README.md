@@ -1,6 +1,6 @@
 # Public Key Encryption in JavaScript
 
-Overview
+Project Overview
 
 A JavaScript implementation of public-key encryption for secure data transmission, leveraging cryptographic algorithms to encrypt and decrypt messages.
 
